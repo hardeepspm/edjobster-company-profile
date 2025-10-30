@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ArrowLeft, Home, Briefcase } from "lucide-react";
 import { Link } from "react-router-dom";
 import CompanyHeader from "@/components/CompanyHeader";
-import CompanyInfoSummary from "@/components/CompanyInfoSummary";
 import TabNavigation from "@/components/TabNavigation";
 import OverviewTab from "@/components/tabs/OverviewTab";
 import AboutTab from "@/components/tabs/AboutTab";
@@ -197,18 +196,8 @@ const CompanyDetails = () => {
         companyName={companyData.name}
         tagline={companyData.tagline}
         websiteUrl={companyData.website}
+        socialLinks={companyData.socialLinks}
       />
-
-      {/* Company Info Summary */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <CompanyInfoSummary
-          location={companyData.location}
-          companySize={companyData.companySize}
-          industry={companyData.industry}
-          website={companyData.website}
-          socialLinks={companyData.socialLinks}
-        />
-      </div>
 
       {/* Tabbed Navigation */}
       <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
@@ -217,11 +206,13 @@ const CompanyDetails = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === "overview" && (
           <OverviewTab
-            description="TechCorp Solutions is a leading technology company specializing in cloud-based enterprise solutions. With over 5,000 employees worldwide, we're committed to innovation and excellence. Our mission is to empower businesses through cutting-edge technology and exceptional service."
             activeJobs={jobs.length}
             averageRating={4.7}
             foundedYear={2010}
             headquarters="Bangalore, Karnataka"
+            location={companyData.location}
+            companySize={companyData.companySize}
+            industry={companyData.industry}
           />
         )}
 

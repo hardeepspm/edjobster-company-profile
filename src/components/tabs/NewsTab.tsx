@@ -2,6 +2,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
+import news1 from "@/assets/news-1.jpg";
+import news2 from "@/assets/news-2.jpg";
+import news3 from "@/assets/news-3.jpg";
 
 interface NewsItem {
   id: string;
@@ -17,6 +20,8 @@ interface NewsTabProps {
 }
 
 const NewsTab = ({ news }: NewsTabProps) => {
+  const newsImages = [news1, news2, news3];
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -28,17 +33,11 @@ const NewsTab = ({ news }: NewsTabProps) => {
           >
             {/* Featured Image */}
             <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 overflow-hidden">
-              {item.imageUrl ? (
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <Calendar className="w-16 h-16 text-primary/40" />
-                </div>
-              )}
+              <img
+                src={item.imageUrl || newsImages[index % newsImages.length]}
+                alt={item.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
             </div>
 
             {/* Content */}

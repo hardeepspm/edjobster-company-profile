@@ -1,5 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Target, Eye, Heart } from "lucide-react";
+import culture1 from "@/assets/culture-1.jpg";
+import culture2 from "@/assets/culture-2.jpg";
+import culture3 from "@/assets/culture-3.jpg";
 
 interface AboutTabProps {
   aboutText: string;
@@ -75,16 +78,19 @@ const AboutTab = ({ aboutText, mission, vision, values }: AboutTabProps) => {
           </Card>
         )}
 
-        {/* Placeholder for culture images */}
+        {/* Company Culture Images */}
         <Card className="p-6 shadow-card">
           <h3 className="text-lg font-bold mb-4">Company Culture</h3>
           <div className="grid grid-cols-2 gap-3">
-            {[1, 2, 3, 4].map((i) => (
-              <div 
-                key={i}
-                className="aspect-square rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20"
-              />
-            ))}
+            <div className="aspect-square rounded-lg overflow-hidden shadow-soft">
+              <img src={culture1} alt="Team collaboration" className="w-full h-full object-cover" />
+            </div>
+            <div className="aspect-square rounded-lg overflow-hidden shadow-soft">
+              <img src={culture2} alt="Office workspace" className="w-full h-full object-cover" />
+            </div>
+            <div className="col-span-2 aspect-video rounded-lg overflow-hidden shadow-soft">
+              <img src={culture3} alt="Team meeting" className="w-full h-full object-cover" />
+            </div>
           </div>
         </Card>
       </div>
