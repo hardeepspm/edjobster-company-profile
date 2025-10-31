@@ -20,7 +20,7 @@ const CompanyHeader = ({ companyName, websiteUrl, averageRating, totalReviews, o
   return (
     <div className="relative bg-card border-b border-border overflow-hidden">
       {/* Banner Image */}
-      <div className="h-48 w-full relative">
+      <div className="h-64 w-full relative">
         <img 
           src={companyBanner} 
           alt="Company Banner" 
