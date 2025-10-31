@@ -194,8 +194,10 @@ const CompanyDetails = () => {
       {/* Company Header */}
       <CompanyHeader
         companyName={companyData.name}
-        tagline={companyData.tagline}
         websiteUrl={companyData.website}
+        averageRating={4.7}
+        totalReviews={42}
+        onTabChange={setActiveTab}
         socialLinks={companyData.socialLinks}
       />
 
@@ -207,9 +209,7 @@ const CompanyDetails = () => {
         {activeTab === "overview" && (
           <OverviewTab
             activeJobs={jobs.length}
-            averageRating={4.7}
             foundedYear={2010}
-            headquarters="Bangalore, Karnataka"
             location={companyData.location}
             companySize={companyData.companySize}
             industry={companyData.industry}

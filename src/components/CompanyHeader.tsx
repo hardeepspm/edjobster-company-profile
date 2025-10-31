@@ -1,11 +1,13 @@
-import { Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
+import { Linkedin, Twitter, Facebook, Instagram, ExternalLink, Star } from "lucide-react";
 import companyBanner from "@/assets/company-banner.jpg";
 import companyLogo from "@/assets/company-logo.png";
 
 interface CompanyHeaderProps {
   companyName: string;
-  tagline: string;
   websiteUrl: string;
+  averageRating: number;
+  totalReviews: number;
+  onTabChange: (tab: string) => void;
   socialLinks?: {
     linkedin?: string;
     twitter?: string;
@@ -14,23 +16,22 @@ interface CompanyHeaderProps {
   };
 }
 
-const CompanyHeader = ({ companyName, tagline, websiteUrl, socialLinks }: CompanyHeaderProps) => {
+const CompanyHeader = ({ companyName, websiteUrl, averageRating, totalReviews, onTabChange, socialLinks }: CompanyHeaderProps) => {
   return (
     <div className="relative bg-card border-b border-border overflow-hidden">
       {/* Banner Image */}
-      <div className="h-64 w-full relative">
+      <div className="h-48 w-full relative">
         <img 
           src={companyBanner} 
           alt="Company Banner" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
       </div>
 
       {/* Company Info */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative -mt-16 pb-8">
-          <div className="flex flex-col md:flex-row items-center md:items-end gap-6">
+        <div className="relative -mt-12 pb-8">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
             {/* Company Logo */}
             <div className="flex-shrink-0">
               <div className="w-32 h-32 rounded-2xl bg-card shadow-card border-4 border-card overflow-hidden">
@@ -42,17 +43,28 @@ const CompanyHeader = ({ companyName, tagline, websiteUrl, socialLinks }: Compan
               </div>
             </div>
 
-            {/* Company Name, Tagline, Website, Social */}
-            <div className="flex-1 text-center md:text-left">
-              <h1 className="text-4xl font-bold text-foreground mb-2">{companyName}</h1>
-              <p className="text-lg text-muted-foreground mb-2">{tagline}</p>
+            {/* Company Name, Website, Rating, Social */}
+            <div className="flex-1 text-center md:text-left pt-4">
+              <div className="flex flex-col md:flex-row items-center md:items-center gap-3 mb-3">
+                <h1 className="text-4xl font-bold text-foreground">{companyName}</h1>
+                <button 
+                  onClick={() => onTabChange('reviews')}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/10 hover:bg-accent/20 transition-colors cursor-pointer"
+                >
+                  <Star className="w-4 h-4 text-accent fill-accent" />
+                  <span className="font-semibold text-foreground">{averageRating}</span>
+                  <span className="text-sm text-muted-foreground">({totalReviews} reviews)</span>
+                </button>
+              </div>
+              
               <a 
                 href={websiteUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-sm text-primary hover:underline inline-block mb-4"
+                className="text-sm text-primary hover:underline inline-flex items-center gap-1.5 mb-4"
               >
                 {websiteUrl.replace(/^https?:\/\//, '')}
+                <ExternalLink className="w-3.5 h-3.5" />
               </a>
               
               {/* Social Links */}
