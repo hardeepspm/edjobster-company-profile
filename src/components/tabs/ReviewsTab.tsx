@@ -2,10 +2,16 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { Star, TrendingUp } from "lucide-react";
 import { useState } from "react";
 import { format } from "date-fns";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
 
 interface Review {
   id: string;
@@ -24,9 +30,41 @@ interface ReviewsTabProps {
   ratingDistribution: { stars: number; count: number }[];
 }
 
+const reviewFormSchema = z.object({
+  name: z.string().min(1, "Name is required").max(100),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  role: z.string().min(1, "Role/Job Title is required").max(100),
+  reviewText: z.string().min(10, "Review must be at least 10 characters").max(1000),
+  rating: z.number().min(1, "Please select a rating"),
+  employmentStatus: z.enum(["employee", "applicant"], {
+    required_error: "Please select your relationship with the company",
+  }),
+});
+
 const ReviewsTab = ({ reviews, averageRating, totalReviews, ratingDistribution }: ReviewsTabProps) => {
-  const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const { toast } = useToast();
+  
+  const form = useForm<z.infer<typeof reviewFormSchema>>({
+    resolver: zodResolver(reviewFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      role: "",
+      reviewText: "",
+      rating: 0,
+      employmentStatus: undefined,
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof reviewFormSchema>) => {
+    console.log(data);
+    toast({
+      title: "Review Submitted",
+      description: "Your review will be visible after approval.",
+    });
+    form.reset();
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in">
@@ -79,63 +117,139 @@ const ReviewsTab = ({ reviews, averageRating, totalReviews, ratingDistribution }
         {/* Review Submission Form */}
         <Card className="p-6 shadow-card">
           <h3 className="text-lg font-bold mb-4">Write a Review</h3>
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <label className="text-sm font-medium mb-2 block">Your Rating</label>
-              <div className="flex gap-2">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    type="button"
-                    onClick={() => setRating(star)}
-                    onMouseEnter={() => setHoverRating(star)}
-                    onMouseLeave={() => setHoverRating(0)}
-                    className="transition-transform hover:scale-110"
-                  >
-                    <Star
-                      className={`w-8 h-8 ${
-                        star <= (hoverRating || rating)
-                          ? "fill-accent text-accent"
-                          : "text-muted"
-                      }`}
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium mb-2 block">Name</label>
-              <Input placeholder="Your name (optional)" />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium mb-2 block">Role/Job Title</label>
-              <Input placeholder="e.g., Senior Developer" />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium mb-2 block">Your Review</label>
-              <Textarea
-                placeholder="Share your experience..."
-                rows={4}
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="rating"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Your Rating *</FormLabel>
+                    <FormControl>
+                      <div className="flex gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => field.onChange(star)}
+                            onMouseEnter={() => setHoverRating(star)}
+                            onMouseLeave={() => setHoverRating(0)}
+                            className="transition-transform hover:scale-110"
+                          >
+                            <Star
+                              className={`w-8 h-8 ${
+                                star <= (hoverRating || field.value)
+                                  ? "fill-accent text-accent"
+                                  : "text-muted"
+                              }`}
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox id="employee" />
-              <label htmlFor="employee" className="text-sm text-muted-foreground">
-                I am/was an employee at this company
-              </label>
-            </div>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button type="submit" className="w-full">
-              Submit Review
-            </Button>
-            <p className="text-xs text-muted-foreground text-center">
-              Your review will be visible after approval
-            </p>
-          </form>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email *</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="your.email@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Role/Job Title *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Senior Developer" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="reviewText"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Your Review *</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Share your experience..."
+                        rows={4}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="employmentStatus"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="employee" id="employee" />
+                          <Label htmlFor="employee" className="text-sm font-normal cursor-pointer">
+                            I am/was an employee at this company
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="applicant" id="applicant" />
+                          <Label htmlFor="applicant" className="text-sm font-normal cursor-pointer">
+                            I am a job applicant at this company
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit" className="w-full">
+                Submit Review
+              </Button>
+              <p className="text-xs text-muted-foreground text-center">
+                Your review will be visible after approval
+              </p>
+            </form>
+          </Form>
         </Card>
       </div>
 
