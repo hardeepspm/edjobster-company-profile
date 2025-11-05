@@ -13,7 +13,7 @@ interface TabNavigationProps {
 
 const TabNavigation = ({ tabs, activeTab, onTabChange }: TabNavigationProps) => {
   return (
-    <div className="border-b border-border bg-card">
+    <div className="sticky top-16 z-40 border-b border-border bg-card shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex gap-1 overflow-x-auto scrollbar-hide" aria-label="Tabs">
           {tabs.map((tab) => (

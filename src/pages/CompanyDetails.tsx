@@ -223,6 +223,7 @@ const CompanyDetails = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
         {/* Overview Section */}
         <section id="overview">
+          <h2 className="text-3xl font-bold text-foreground mb-6">Overview</h2>
           <OverviewTab
             activeJobs={jobs.length}
             foundedYear={2010}
@@ -234,6 +235,7 @@ const CompanyDetails = () => {
 
         {/* About Section */}
         <section id="about">
+          <h2 className="text-3xl font-bold text-foreground mb-6">About</h2>
           <AboutTab
             aboutText={`TechCorp Solutions has been at the forefront of technological innovation since 2010. We specialize in developing cloud-based enterprise solutions that help businesses scale efficiently and compete effectively in the digital age.
 
@@ -255,11 +257,13 @@ We pride ourselves on fostering a culture of continuous learning, collaboration,
 
         {/* Active Jobs Section */}
         <section id="jobs">
+          <h2 className="text-3xl font-bold text-foreground mb-6">Active Jobs</h2>
           <ActiveJobsTab jobs={jobs} />
         </section>
 
         {/* Reviews Section */}
         <section id="reviews">
+          <h2 className="text-3xl font-bold text-foreground mb-6">Reviews</h2>
           <ReviewsTab
             reviews={reviews}
             averageRating={4.7}
@@ -270,6 +274,7 @@ We pride ourselves on fostering a culture of continuous learning, collaboration,
 
         {/* News Section */}
         <section id="news">
+          <h2 className="text-3xl font-bold text-foreground mb-6">Company News</h2>
           <NewsTab news={news} />
         </section>
       </div>
