@@ -13,6 +13,21 @@ import { Button } from "@/components/ui/button";
 const CompanyDetails = () => {
   const [activeTab, setActiveTab] = useState("overview");
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 140; // Account for sticky header and tab navigation
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+    setActiveTab(sectionId);
+  };
+
   // Mock data
   const companyData = {
     name: "TechCorp Solutions",
@@ -202,11 +217,12 @@ const CompanyDetails = () => {
       />
 
       {/* Tabbed Navigation */}
-      <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+      <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={scrollToSection} />
 
-      {/* Tab Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === "overview" && (
+      {/* All Sections on Same Page */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        {/* Overview Section */}
+        <section id="overview">
           <OverviewTab
             activeJobs={jobs.length}
             foundedYear={2010}
@@ -214,9 +230,10 @@ const CompanyDetails = () => {
             companySize={companyData.companySize}
             industry={companyData.industry}
           />
-        )}
+        </section>
 
-        {activeTab === "about" && (
+        {/* About Section */}
+        <section id="about">
           <AboutTab
             aboutText={`TechCorp Solutions has been at the forefront of technological innovation since 2010. We specialize in developing cloud-based enterprise solutions that help businesses scale efficiently and compete effectively in the digital age.
 
@@ -234,20 +251,27 @@ We pride ourselves on fostering a culture of continuous learning, collaboration,
               "Diversity: We celebrate diverse perspectives and backgrounds",
             ]}
           />
-        )}
+        </section>
 
-        {activeTab === "jobs" && <ActiveJobsTab jobs={jobs} />}
+        {/* Active Jobs Section */}
+        <section id="jobs">
+          <ActiveJobsTab jobs={jobs} />
+        </section>
 
-        {activeTab === "reviews" && (
+        {/* Reviews Section */}
+        <section id="reviews">
           <ReviewsTab
             reviews={reviews}
             averageRating={4.7}
             totalReviews={42}
             ratingDistribution={ratingDistribution}
           />
-        )}
+        </section>
 
-        {activeTab === "news" && <NewsTab news={news} />}
+        {/* News Section */}
+        <section id="news">
+          <NewsTab news={news} />
+        </section>
       </div>
     </div>
   );

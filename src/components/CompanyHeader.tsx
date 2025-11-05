@@ -30,7 +30,7 @@ const CompanyHeader = ({ companyName, websiteUrl, averageRating, totalReviews, o
 
       {/* Company Info */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative -mt-12 pb-10">
+        <div className="relative -mt-10 pb-10">
           <div className="flex items-start gap-6">
             {/* Company Logo */}
             <div className="flex-shrink-0">

@@ -27,7 +27,7 @@ const OverviewTab = ({
     <div className="space-y-8 animate-fade-in">
       {/* Company Info */}
       <Card className="p-6 shadow-card">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Location */}
           <div className="flex items-start gap-3">
             <div className="rounded-lg bg-primary/10 p-2">
@@ -39,7 +39,7 @@ const OverviewTab = ({
             </div>
           </div>
 
-          {/* Company Size & Founded */}
+          {/* Company Size */}
           <div className="flex items-start gap-3">
             <div className="rounded-lg bg-secondary/10 p-2">
               <Users className="w-5 h-5 text-secondary" />
@@ -47,7 +47,6 @@ const OverviewTab = ({
             <div>
               <p className="text-sm text-muted-foreground">Company Size</p>
               <p className="font-semibold text-foreground">{companySize}</p>
-              <p className="text-xs text-muted-foreground mt-1">Founded: {foundedYear}</p>
             </div>
           </div>
 
@@ -59,17 +58,6 @@ const OverviewTab = ({
             <div>
               <p className="text-sm text-muted-foreground">Industry</p>
               <p className="font-semibold text-foreground">{industry}</p>
-            </div>
-          </div>
-
-          {/* Founded Year as separate tile */}
-          <div className="flex items-start gap-3">
-            <div className="rounded-lg bg-primary/10 p-2">
-              <Calendar className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Established</p>
-              <p className="font-semibold text-foreground">{foundedYear}</p>
             </div>
           </div>
         </div>
